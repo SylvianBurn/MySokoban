@@ -5,8 +5,25 @@
 ** my_str_to_line_array.c
 */
 
-#include "include/my.h"
-#include "include/mysokoban.h"
+#include "../include/my.h"
+#include "../include/mysokoban.h"
+
+int find_longest_line(char *str)
+{
+    int line_length = 0;
+    int line = 0;
+
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] != '\n')
+            line_length++;
+        else {
+            if (line_length > line)
+                line = line_length;
+            line_length = 0;
+        }
+    }
+    return (line);
+}
 
 int get_nb_line(char *buf, data_t *data)
 {
@@ -21,7 +38,7 @@ int get_nb_line(char *buf, data_t *data)
 char **my_malloc(char *buff, char **tab, int nb_line)
 {
     for (int i = 0; i < nb_line; i++) {
-        tab[i] = malloc(sizeof(char) * my_strlen(buff));
+        tab[i] = malloc(sizeof(char) * (find_longest_line(buff) + 1));
     }
     return (tab);
 }
@@ -54,6 +71,7 @@ char **my_str_to_line_array(char *buff, data_t *data)
 {
     char **tab = malloc(sizeof(char *) * (get_nb_line(buff, data) + 1));
 
+    data->longest_line = find_longest_line(buff);
     tab = my_malloc(buff, tab, (data->nb_line + 1));
     tab = str_to_line_array2(buff, tab, data);
     return (tab);

@@ -5,10 +5,14 @@
 ## Makefile
 ##
 
-SRC	=	main.c	\
-		my_str_to_line_array.c	\
-		error.c	\
-		free.c	\
+SRC	=	src/main.c	\
+		src/my_str_to_line_array.c	\
+		src/error.c	\
+		src/free.c	\
+		src/game.c	\
+		src/move.c	\
+		src/end_screen.c	\
+		src/scanning.c	\
 
 OBJ	=	$(SRC:.c=.o)
 

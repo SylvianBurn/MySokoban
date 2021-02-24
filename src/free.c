@@ -5,8 +5,8 @@
 ** free.c
 */
 
-#include "include/my.h"
-#include "include/mysokoban.h"
+#include "../include/my.h"
+#include "../include/mysokoban.h"
 
 void my_freeing(char **map, data_t *data)
 {
