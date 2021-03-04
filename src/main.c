@@ -44,6 +44,7 @@ int display_loop(char **map, char *buff, data_t *data)
         if (detect_end(data) == 1)
             return (1);
     }
+    return (0);
 }
 
 int display(char **map, char *buff, data_t *data)
@@ -51,27 +52,43 @@ int display(char **map, char *buff, data_t *data)
     initscr();
     keypad(stdscr, TRUE);
     curs_set(0);
-    if (display_loop(map, buff, data) == 1)
+    if (display_loop(map, buff, data) == 1) {
+        endwin();
         return (1);
+    }
     endwin();
-    return 0;
+    return (0);
+}
+
+data_t *init_pos(data_t *data)
+{
+    data->pos->x_case = malloc(sizeof(int) * (data->pos->nb_cases + 1));
+    data->pos->y_case = malloc(sizeof(int) * (data->pos->nb_cases + 1));
+    data->pos->x_sto = malloc(sizeof(int) * (data->pos->nb_sto + 1));
+    data->pos->y_sto = malloc(sizeof(int) * (data->pos->nb_sto + 1));
+    return (data);
 }
 
 int main(int ac, char **av)
 {
+    data_t *data = malloc(sizeof(data_t));
+
+    data->pos = malloc(sizeof(pos_t));
     if (ac == 2 && av[1][0] == '-' && av[1][1] == 'h') {
         print_usage();
+        free(data);
         return (0);
     }
-    data_t *data = malloc(sizeof(data_t));
-    data->pos = malloc(sizeof(pos_t));
     if (get_file(data, av) == 84 || check_map(data->buff, data) == 84)
         return (84);
+    data = init_pos(data);
     data->map = my_str_to_line_array(data->buff, data);
     data->map_backup = data->map;
-    find_everything(data);
-    if (display(data->map, data->buff, data) == 1)
+    find_my_player(data);
+    if (display(data->map, data->buff, data) == 1) {
+        my_freeing(data->map, data);
         return (1);
+    }
     my_freeing(data->map, data);
     return (0);
 }

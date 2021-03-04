@@ -10,7 +10,6 @@
 
 int my_restart(data_t *data)
 {
-    data->map = data->map_backup;
     return (0);
 }
 
@@ -74,12 +73,13 @@ int check_if_blocked(char **map)
 
 int detect_end(data_t *data)
 {
-    // if (data->pos->x_backup == 0 && check_targets(data->map) == 0) {
-    //     display_win(data);
-    //     return (0);
-    // }
-    if (check_if_blocked(data->map) != 0) {
+    if (check_win(data) == 0) {
+        display_win(data);
+        return (0);
+    }
+    else if (check_if_blocked(data->map) != 0) {
         display_loose(data);
         return (1);
     }
+    return (-1);
 }

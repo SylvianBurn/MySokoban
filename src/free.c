@@ -16,5 +16,10 @@ void my_freeing(char **map, data_t *data)
     }
     free(map);
     free(data->buff);
+    free(data->pos->x_sto);
+    free(data->pos->y_sto);
+    free(data->pos->x_case);
+    free(data->pos->y_case);
+    free(data->pos);
     free(data);
 }

@@ -23,13 +23,11 @@ void find_my_player(data_t *data)
 
 void find_my_cases(data_t *data)
 {
-    data->pos->x_case = malloc(sizeof(int) * (data->pos->nb_cases + 1));
-    data->pos->y_case = malloc(sizeof(int) * (data->pos->nb_cases + 1));
     int array = 0;
 
     for (int x = 0; data->map[x]; x++) {
         for (int y = 0; data->map[x][y]; y++) {
-            if (data->map[x][y] == 'O') {
+            if (data->map[x][y] == 'X') {
                 data->pos->x_case[array] = x;
                 data->pos->y_case[array] = y;
                 array++;
@@ -42,8 +40,6 @@ void find_my_cases(data_t *data)
 
 void find_my_storages(data_t *data)
 {
-    data->pos->x_sto = malloc(sizeof(int) * (data->pos->nb_sto + 1));
-    data->pos->y_sto = malloc(sizeof(int) * (data->pos->nb_sto + 1));
     int array = 0;
 
     for (int x = 0; data->map[x]; x++) {
@@ -63,5 +59,14 @@ void find_everything(data_t *data)
 {
     find_my_player(data);
     find_my_storages(data);
-    find_my_cases(data);
+}
+
+int check_win(data_t *data)
+{
+    for (int i = 0; data->pos->x_sto[i] != -1; i++) {
+        if (data->pos->x_sto[i] != data->pos->x_case[i] ||
+            data->pos->y_sto[i] != data->pos->y_case[i])
+            return (1);
+    }
+    return (0);
 }
