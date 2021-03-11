@@ -70,7 +70,7 @@ int check_nb_players(char *str)
 
 int check_map(char *buff, data_t *data)
 {
-    for(int i = 0; buff[i] != '\0'; i++) {
+    for (int i = 0; buff[i] != '\0'; i++) {
         if (buff[i] != ' ' && buff[i] != '#' && buff[i] != '\n' &&
         buff[i] != 'X' && buff[i] != 'P' && buff[i] != 'O') {
             write(2, "File containing forbiden characters\n", 37);
