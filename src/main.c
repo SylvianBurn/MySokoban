@@ -8,6 +8,16 @@
 #include "../include/my.h"
 #include "../include/mysokoban.h"
 
+void case_reappear(data_t *data)
+{
+    int i = 0;
+
+    for (; data->pos->x_sto[i] != -1 && data->pos->y_sto[i] != -1; i++) {
+        if (data->map[data->pos->x_sto[i]][data->pos->y_sto[i]] == ' ')
+            data->map[data->pos->x_sto[i]][data->pos->y_sto[i]] = 'O';
+    }
+}
+
 int get_file(data_t *data, char **av)
 {
     int fd = open(av[1], O_RDONLY);
@@ -25,41 +35,6 @@ int get_file(data_t *data, char **av)
     return (0);
 }
 
-int display_loop(char **map, char *buff, data_t *data)
-{
-    char *msg = "Please enlarge the terminal.\n";
-
-    while (1) {
-        clear();
-        if (LINES < data->nb_line || COLS < find_longest_line(buff))
-            mvprintw(LINES/2, (COLS/2) - (my_strlen(msg) / 2), msg);
-        else {
-            for (int i = 0; map[i] != NULL; i++)
-                mvprintw((LINES/2 - (data->nb_line / 2) + i), (COLS / 2) -
-                (my_strlen(map[i]) / 2), map[i]);
-            refresh();
-        }
-        if (game_loop(getch(), data) == 1)
-            break;
-        if (detect_end(data) == 1)
-            return (1);
-    }
-    return (0);
-}
-
-int display(char **map, char *buff, data_t *data)
-{
-    initscr();
-    keypad(stdscr, TRUE);
-    curs_set(0);
-    if (display_loop(map, buff, data) == 1) {
-        endwin();
-        return (1);
-    }
-    endwin();
-    return (0);
-}
-
 data_t *init_pos(data_t *data)
 {
     data->pos->x_case = malloc(sizeof(int) * (data->pos->nb_cases + 1));
@@ -67,6 +42,17 @@ data_t *init_pos(data_t *data)
     data->pos->x_sto = malloc(sizeof(int) * (data->pos->nb_sto + 1));
     data->pos->y_sto = malloc(sizeof(int) * (data->pos->nb_sto + 1));
     return (data);
+}
+
+int game_func(data_t *data)
+{
+    find_my_player(data);
+    find_my_storages(data);
+    if (display(data->map, data->buff, data) == 1) {
+        my_freeing(data->map, data);
+        return (1);
+    }
+    return (0);
 }
 
 int main(int ac, char **av)
@@ -84,11 +70,8 @@ int main(int ac, char **av)
     data = init_pos(data);
     data->map = my_str_to_line_array(data->buff, data);
     data->map_backup = data->map;
-    find_my_player(data);
-    if (display(data->map, data->buff, data) == 1) {
-        my_freeing(data->map, data);
+    if (game_func(data) == 1)
         return (1);
-    }
     my_freeing(data->map, data);
     return (0);
 }

@@ -13,6 +13,7 @@ SRC	=	src/main.c	\
 		src/move.c	\
 		src/end_screen.c	\
 		src/scanning.c	\
+		src/display.c
 
 OBJ	=	$(SRC:.c=.o)
 

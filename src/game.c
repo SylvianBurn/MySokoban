@@ -8,9 +8,10 @@
 #include "../include/my.h"
 #include "../include/mysokoban.h"
 
-int my_restart(data_t *data)
+void my_restart(data_t *data)
 {
-    return (0);
+    data->map = data->map_backup;
+    find_my_player(data);
 }
 
 int game_loop(int key, data_t *data)

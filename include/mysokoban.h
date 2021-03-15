@@ -55,5 +55,11 @@ void display_win(data_t *);
 void display_loose(data_t *);
 int detect_end(data_t *);
 int check_win(data_t *);
+int display_loop(char **, char *, data_t *);
+int display(char **, char *, data_t *);
+int game_func(data_t *data);
+void case_reappear(data_t *data);
+void find_my_storages(data_t *data);
+void find_my_cases(data_t *data);
 
 #endif /* !MYSOKOBAN_H_ */
