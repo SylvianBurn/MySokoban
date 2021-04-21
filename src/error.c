@@ -77,8 +77,9 @@ int check_map(char *buff, data_t *data)
             return (84);
         }
     }
-    if (check_nb_players(buff) == 84)
+    if (check_nb_players(buff) == 84) {
         return (84);
+    }
     if (check_nb_boxes(buff, data) != check_nb_storage(buff, data)) {
         write(2, "Number of boxes and storage locations doesn't match.\n", 54);
         return (84);
